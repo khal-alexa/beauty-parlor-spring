@@ -21,7 +21,11 @@ public class RegisterController {
         String password = request.getParameter("psw");
         String email = request.getParameter("email");
         String phoneNumber = request.getParameter("phoneNumber");
-        UserDto userDto = new UserDto(name, password, email, phoneNumber);
+        UserDto userDto = new UserDto();
+        userDto.setUserName(name);
+        userDto.setPassword(password);
+        userDto.setEmail(email);
+        userDto.setPhoneNumber(phoneNumber);
 
     }
 }
