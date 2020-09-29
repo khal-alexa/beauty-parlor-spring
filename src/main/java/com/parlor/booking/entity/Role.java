@@ -1,7 +1,14 @@
 package com.parlor.booking.entity;
 
-public enum Role {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum Role implements GrantedAuthority {
     CLIENT,
     ADMIN,
-    SPECIALIST
+    SPECIALIST;
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
 }

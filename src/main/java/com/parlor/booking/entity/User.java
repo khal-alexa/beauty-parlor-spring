@@ -1,5 +1,6 @@
 package com.parlor.booking.entity;
 
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Component
+@Builder
 @Data
 @Entity
 @Table(name = "users")
@@ -23,7 +25,7 @@ public class User {
 
     @NotNull
     @Column(name = "user_name")
-    private String userName;
+    private String username;
 
     @NotNull
     @Column(name = "password")

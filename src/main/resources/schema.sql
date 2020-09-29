@@ -65,3 +65,6 @@ CREATE TABLE IF NOT EXISTS appointments
     CONSTRAINT FK_appointments_users_specialist FOREIGN KEY (specialist_id) REFERENCES users (id) ON DELETE CASCADE,
     CONSTRAINT FK_appointments_services FOREIGN KEY (service_id) REFERENCES services (id) ON DELETE CASCADE
 );
+
+INSERT INTO users (user_name, password, email, phone_number, role)
+values ('anna', 'password', 'annaK@gmail.com', '+380501234567', 'CLIENT');
