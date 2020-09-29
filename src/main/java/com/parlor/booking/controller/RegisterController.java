@@ -1,6 +1,8 @@
 package com.parlor.booking.controller;
 
 import com.parlor.booking.domain.UserDto;
+import com.parlor.booking.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class RegisterController {
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/register")
     public String welcome() {
 
@@ -16,16 +21,12 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public void saveData(HttpServletRequest request){
-        String name = request.getParameter("uname");
-        String password = request.getParameter("psw");
-        String email = request.getParameter("email");
-        String phoneNumber = request.getParameter("phoneNumber");
-        UserDto userDto = new UserDto();
-        userDto.setUserName(name);
-        userDto.setPassword(password);
-        userDto.setEmail(email);
-        userDto.setPhoneNumber(phoneNumber);
-
+    public String saveNewUser(HttpServletRequest request){
+        UserDto userDto = UserDto.builder()
+                .username(request.getParameter("username"))
+                .password(request.getParameter("password"))
+                .build();
+        userService.addNewUser(userDto);
+        return "redirect:/login";
     }
 }
