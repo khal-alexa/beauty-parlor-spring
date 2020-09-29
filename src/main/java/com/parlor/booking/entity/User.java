@@ -1,7 +1,9 @@
 package com.parlor.booking.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
@@ -15,6 +17,8 @@ import javax.validation.constraints.NotNull;
 
 @Component
 @Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
 @Table(name = "users")

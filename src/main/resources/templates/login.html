@@ -1,27 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
     <meta charset="UTF-8">
     <title>Welcome</title>
 </head>
-<body>
-<h1>Welcome to beauty parlor</h1>
-<h2>Login and register Form</h2>
+<body style="background-color: lavenderblush">
+<h1><p style="color: deepskyblue"><span th:text="#{welcome.message}"></span></p></h1>
+<h2><p style="color: deeppink"><span th:text="#{login.register.form}"></span></p></h2>
 
+<a href="?lang=en" class="bp-icon bp-icon-next" th:data-info="#{lang.en}"><span><span th:text="#{lang.en}"></span></span></a>
+<a href="?lang=ua" class="bp-icon bp-icon-drop" th:data-info="#{lang.ua}"><span><span th:text="#{lang.ua}"></span></span></a>
 <form action="/login" method="post">
     <div class="container">
-        <label ><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" name="username" required>
+        <label ><b><span th:text="#{user.login}"></span></b></label>
+        <input type="text" th:placeholder="#{message.username}" name="username" required>
         <br>
 
-        <label ><b>Password </b></label>
-        <input type="password" placeholder="Enter Password" name="password" required>
+        <label ><b><span th:text="#{user.password}"></span> </b></label>
+        <input type="password" th:placeholder="#{message.password}" name="password" required>
         <br>
-        <button type="submit">Login</button>
+        <button type="submit"><span th:text="#{button.login}"></span></button>
     </div>
 </form>
 <form action="/register">
-    <input type="submit" value="Register" />
+    <input type="submit" th:value="#{button.register}" />
 </form>
 
 <!--<button type="submit">Register</button>-->
