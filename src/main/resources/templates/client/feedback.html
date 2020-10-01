@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <meta charset="UTF-8">
+    <title>Feedback</title>
+</head>
+<body>
+<h1><p><span th:text="#{feedback.message}"></span></p></h1>
+<form method="POST" action='/feedback' >
+    <textarea rows = "5" cols = "60" name = "feedback">
+         </textarea><br>
+    <input type = "submit" value = "submit" />
+</form>
+</body>
+</html>
