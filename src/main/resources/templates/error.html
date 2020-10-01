@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
     <meta charset="UTF-8">
-    <title>ERROR</title>
+    <title>Error</title>
 </head>
-<body style="background-color: lavenderblush">
-<h1><p style="color: red"> Something went wrong</p></h1>
-
+<body>
+<div>
+    <h1>Sorry</h1>
+    <p th:text="${exceptionMessage}"></p>
+</div>
 </body>
 </html>
