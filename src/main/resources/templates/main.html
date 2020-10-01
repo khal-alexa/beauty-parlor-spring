@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <meta charset="UTF-8">
+    <title>Client</title>
+</head>
+<body>
+<h1>Main page for non-logged user</h1>
+<form action="/login" method="get">
+    <a href="/login"><span th:text="#{button.login}"></span></a>
+</form>
+<form action="/register" method="get">
+    <a href="/register"><span th:text="#{button.register}"></span></a>
+</form>
+<h1>Table for Guest</h1>
+</body>
+</html>

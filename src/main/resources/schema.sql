@@ -1,13 +1,15 @@
 CREATE TABLE IF NOT EXISTS users
 (
     id           BIGINT AUTO_INCREMENT NOT NULL,
-    user_name    VARCHAR(30)           NOT NULL,
-    password     VARCHAR(30)           NOT NULL,
+    username     VARCHAR(30)           NOT NULL,
+    first_name   VARCHAR(30)           NOT NULL,
+    last_name    VARCHAR(30)           NOT NULL,
+    password     VARCHAR(70)           NOT NULL,
     email        VARCHAR(255)          NOT NULL,
     phone_number VARCHAR(20)           NOT NULL,
     role         VARCHAR(20)           NOT NULL,
     CONSTRAINT PK_users PRIMARY KEY (id),
-    CONSTRAINT UQ_user_name UNIQUE (user_name),
+    CONSTRAINT UQ_user_name UNIQUE (username),
     CONSTRAINT UQ_user_email UNIQUE (email)
 );
 
@@ -65,6 +67,3 @@ CREATE TABLE IF NOT EXISTS appointments
     CONSTRAINT FK_appointments_users_specialist FOREIGN KEY (specialist_id) REFERENCES users (id) ON DELETE CASCADE,
     CONSTRAINT FK_appointments_services FOREIGN KEY (service_id) REFERENCES services (id) ON DELETE CASCADE
 );
-
-INSERT INTO users (user_name, password, email, phone_number, role)
-values ('anna', 'password', 'annaK@gmail.com', '+380501234567', 'CLIENT');
