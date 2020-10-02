@@ -22,12 +22,12 @@ CREATE TABLE IF NOT EXISTS timeslots
 
 CREATE TABLE IF NOT EXISTS feedbacks
 (
-    id            BIGINT AUTO_INCREMENT NOT NULL,
-    rate          BIGINT                NOT NULL,
-    text          VARCHAR(255)          NOT NULL,
-    client_id     BIGINT                NOT NULL,
-    specialist_id BIGINT                NOT NULL,
-    date_time     DATETIME              NOT NULL,
+    id            BIGINT AUTO_INCREMENT   NOT NULL,
+    rate          BIGINT                  NOT NULL,
+    text          VARCHAR(255)            NOT NULL,
+    client_id     BIGINT                  NOT NULL,
+    specialist_id BIGINT                  NOT NULL,
+    created_on    TIMESTAMP DEFAULT now() NOT NULL,
     CONSTRAINT PK_feedbacks PRIMARY KEY (id),
     CONSTRAINT FK_appointments_feedbacks_client FOREIGN KEY (client_id) REFERENCES users (id) ON DELETE CASCADE,
     CONSTRAINT FK_appointments_feedbacks_specialist FOREIGN KEY (specialist_id) REFERENCES users (id) ON DELETE CASCADE
