@@ -1,6 +1,10 @@
 package com.parlor.booking.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
@@ -12,6 +16,9 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Component
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
 @Table(name = "feedbacks")
@@ -37,7 +44,7 @@ public class Feedback {
     private Long specialistId;
 
     @NotNull
-    @Column(name = "date_time")
-    private LocalDateTime dateTime;
+    @Column(name = "created_on")
+    private LocalDateTime createdOn = LocalDateTime.now();
 
 }

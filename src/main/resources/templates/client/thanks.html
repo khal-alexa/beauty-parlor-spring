@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+    <meta charset="UTF-8">
+    <title>Thanks</title>
+</head>
+<body>
+<h1><p> Thank you for your feedback!</p></h1>
+<form action="/client" method="get">
+    <a href="/client"><span th:text="#{button.back}"></span></a>
+</form>
+</body>
+</html>
