@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS feedbacks
 (
     id            BIGINT AUTO_INCREMENT   NOT NULL,
     rate          BIGINT                  NOT NULL,
-    text          VARCHAR(255)            NOT NULL,
+    text          VARCHAR(2000)           NOT NULL,
     client_id     BIGINT                  NOT NULL,
     specialist_id BIGINT                  NOT NULL,
     created_on    TIMESTAMP DEFAULT now() NOT NULL,
