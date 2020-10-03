@@ -10,3 +10,4 @@ target/
 *.ipr
 *.log
 *.gz
+*.tmp
