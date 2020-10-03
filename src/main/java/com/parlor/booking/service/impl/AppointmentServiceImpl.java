@@ -18,6 +18,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -68,8 +69,24 @@ public class AppointmentServiceImpl implements AppointmentService {
         return dtos;
     }
 
+    @Override
+    public List<AppointmentDto> findAllBySpecialistIdAndDate(Long id, LocalDate date) {
+        return appointmentRepository.findAllByDate(date).stream()
+                .filter(appointment -> appointment.getSpecialistId().equals(id))
+                .map(this::mapAppointmentIntoAppointmentDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void markAppointmentAsDone(Long id) {
+        Optional<Appointment> appointment = appointmentRepository.findById(id);
+        appointment.orElseThrow(EntityNotFoundException::new).setDone(true);
+        appointmentRepository.save(appointment.get());
+    }
+
     private AppointmentDto mapAppointmentIntoAppointmentDto(Appointment appointment) {
         return AppointmentDto.builder()
+                .id(appointment.getId())
                 .date(appointment.getDate())
                 .timeslot(timeslotRepository.findById(appointment.getTimeslotId()).
                         orElseThrow(EntityNotFoundException::new).
@@ -77,9 +94,11 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .treatmentName(treatmentRepository.findById(appointment.getTreatmentId())
                         .orElseThrow(EntityNotFoundException::new)
                         .getName())
+                .specialistId(appointment.getSpecialistId())
                 .specialistName(userRepository.findById(appointment.getSpecialistId())
                         .orElseThrow(EntityNotFoundException::new)
                         .getUsername())
+                .isDone(appointment.isDone())
                 .available(false)
                 .build();
     }
