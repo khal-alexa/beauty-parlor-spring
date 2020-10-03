@@ -17,4 +17,5 @@ public interface UserService extends UserDetailsService {
     Optional<User> findByEmail(String email);
 
     List<User> findAllByRole(Role role);
+
 }

@@ -3,29 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>Welcome</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body style="background-color: lavenderblush">
 <h1><p style="color: deepskyblue"><span th:text="#{welcome.message}"></span></p></h1>
 <h2><p style="color: deeppink"><span th:text="#{login.register.form}"></span></p></h2>
 
-<a href="?lang=en" class="bp-icon bp-icon-next" th:data-info="#{lang.en}"><span><span th:text="#{lang.en}"></span></span></a>
-<a href="?lang=ua" class="bp-icon bp-icon-drop" th:data-info="#{lang.ua}"><span><span th:text="#{lang.ua}"></span></span></a>
+<a href="?lang=en" class="bp-icon bp-icon-next" th:data-info="#{lang.en}"><span><span
+        th:text="#{lang.en}"></span></span></a>
+<a href="?lang=ua" class="bp-icon bp-icon-drop" th:data-info="#{lang.ua}"><span><span
+        th:text="#{lang.ua}"></span></span></a>
 <form action="/login" method="post">
     <div class="container">
-        <label ><b><span th:text="#{user.login}"></span></b></label>
+        <label><b><span th:text="#{user.login}"></span></b></label>
         <input type="text" th:placeholder="#{message.username}" name="username" required>
         <br>
 
-        <label ><b><span th:text="#{user.password}"></span> </b></label>
+        <label><b><span th:text="#{user.password}"></span> </b></label>
         <input type="password" th:placeholder="#{message.password}" name="password" required>
         <br>
         <button type="submit"><span th:text="#{button.login}"></span></button>
     </div>
 </form>
 <form action="/register" method="get">
-    <input type="submit" th:value="#{button.register}" />
+    <input type="submit" th:value="#{button.register}"/>
 </form>
 
-<!--<button type="submit">Register</button>-->
+<h1>Table for Guest</h1>
+<div class="container">
+
+    <table style="width:50%">
+        <tr>
+            <th>Service</th>
+            <th>Specialist</th>
+            <th>Rating</th>
+            <th>Price</th>
+        </tr>
+        <tr th:each="object : ${objects}">
+            <td th:text="${object.getTreatmentName()}"></td>
+            <td th:text="${object.getSpecialistName()}"></td>
+            <td th:text="${object.getRate()}"></td>
+            <td th:text="${object.getPrice()}"></td>
+        </tr>
+    </table>
+    <h5>If you want to make an appointment, please login or register</h5>
+</div>
 </body>
 </html>

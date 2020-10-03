@@ -1,6 +1,9 @@
 package com.parlor.booking.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
@@ -12,6 +15,9 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Component
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
 @Table(name = "appointments")
@@ -37,8 +43,8 @@ public class Appointment {
     private Long specialistId;
 
     @NotNull
-    @Column(name = "service_id")
-    private Long serviceId;
+    @Column(name = "treatment_id")
+    private Long treatmentId;
 
     @NotNull
     @Column(name = "is_paid")
