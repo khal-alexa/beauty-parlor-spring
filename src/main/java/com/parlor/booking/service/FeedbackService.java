@@ -5,4 +5,6 @@ import com.parlor.booking.entity.Feedback;
 
 public interface FeedbackService {
     Feedback saveFeedback(FeedbackDto feedbackDto);
+
+    Double findSpecialistsRate(Long specialistId);
 }

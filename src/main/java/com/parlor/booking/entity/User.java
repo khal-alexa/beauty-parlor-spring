@@ -12,8 +12,12 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Component
 @Builder
@@ -55,5 +59,12 @@ public class User {
     @Column
     @NotNull
     private Role role;
+
+    @ManyToMany
+    @JoinTable(
+            name = "specialists_treatments",
+            joinColumns = @JoinColumn(name = "specialist_id"),
+            inverseJoinColumns = @JoinColumn(name = "treatment_id"))
+    private List<Treatment> treatments;
 
 }

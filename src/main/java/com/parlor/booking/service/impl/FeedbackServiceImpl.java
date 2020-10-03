@@ -34,4 +34,9 @@ public class FeedbackServiceImpl implements FeedbackService {
                 .build());
     }
 
+    @Override
+    public Double findSpecialistsRate(Long specialistId) {
+        return feedbackRepository.findAvgRate(specialistId);
+    }
+
 }
