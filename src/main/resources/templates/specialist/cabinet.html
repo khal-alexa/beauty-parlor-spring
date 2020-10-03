@@ -3,10 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Specialist</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
 <h1>Page for authorized Specialist</h1>
 <h2>Specialist cabinet</h2>
+<form action="/specialist" method="get">
+    Choose a date: <input type="date" name="${date}" />
+    <a href="/specialist"><span th:text="#{button.submit}"></span></a>
+</form>
+<form action="/specialist" method="get">
+    <div class="container">
+
+        <table style="width:50%">
+            <tr>
+                <th>Time</th>
+                <th>Date</th>
+                <th>Service</th>
+                <th>isDone</th>
+            </tr>
+            <tr th:each="appointment : ${appointments}">
+                <td th:text="${appointment.getTimeslot()}"></td>
+                <td th:text="${appointment.getDate()}"></td>
+                <td th:text="${appointment.getTreatmentName()}"></td>
+                <td th:text="${appointment.getIsDone()}"></td>
+                <td>
+                    <a href="/specialist/done"><span th:text="Done"></span></a></td>
+            </tr>
+        </table>
+    </div>
+</form>
 
 </body>
 </html>
