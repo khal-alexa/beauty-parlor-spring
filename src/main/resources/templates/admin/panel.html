@@ -3,10 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
 <h1>Admin panel</h1>
+<form action="/admin" method="get">
+    Choose a date: <input type="date" name="${date}" />
+    <a href="/admin"><span th:text="#{button.submit}"></span></a>
+</form>
+<form action="/admin" method="get">
+    <div class="container">
 
-<h1>Table for Admin</h1>
+        <table style="width:50%">
+            <tr>
+                <th>Time</th>
+                <th>Date</th>
+                <th>Service</th>
+                <th>isDone</th>
+            </tr>
+            <tr th:each="appointment : ${appointments}">
+                <td th:text="${appointment.getTimeslot()}"></td>
+                <td th:text="${appointment.getDate()}"></td>
+                <td th:text="${appointment.getTreatmentName()}"></td>
+                <td th:text="${appointment.getIsDone()}"></td>
+                <td>
+                    <a href="/admin"><span th:text="Edit"></span></a>
+            </tr>
+        </table>
+    </div>
+</form>
+
 </body>
 </html>
