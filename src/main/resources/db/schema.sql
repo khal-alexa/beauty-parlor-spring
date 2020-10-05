@@ -1,3 +1,15 @@
+CREATE DATABASE IF NOT EXISTS beauty CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+USE beauty;
+
+DROP TABLE IF EXISTS appointments;
+DROP TABLE IF EXISTS specialists_treatments;
+DROP TABLE IF EXISTS treatments;
+DROP TABLE IF EXISTS feedbacks;
+DROP TABLE IF EXISTS timeslots;
+DROP TABLE IF EXISTS users;
+
+
 CREATE TABLE IF NOT EXISTS users
 (
     id           BIGINT AUTO_INCREMENT NOT NULL,
