@@ -1,13 +1,15 @@
 package com.parlor.booking.controller;
 
-import com.parlor.booking.domain.MainPageDto;
+import com.parlor.booking.domain.TreatmentDto;
 import com.parlor.booking.domain.UserDto;
 import com.parlor.booking.entity.User;
 import com.parlor.booking.service.MainPageService;
-import com.parlor.booking.service.TreatmentService;
 import com.parlor.booking.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -26,16 +27,15 @@ public class UserController {
     private final UserService userService;
     private final MainPageService mainPageService;
 
-
     @GetMapping("/")
-    public String indexPage(Model model, Authentication authentication) {
+    public String indexPage(@PageableDefault(size = 5) Pageable pageable, Model model, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             UserDto user = (UserDto) authentication.getPrincipal();
             String path = user.getAuthorities().get(0).toString().toLowerCase();
             return "redirect:/" + path;
         }
-        List<MainPageDto> objects = mainPageService.getAllMainPageObjects();
-        model.addAttribute("objects", objects);
+        Page<TreatmentDto> page = mainPageService.getAllMainPageObjects(pageable);
+        model.addAttribute("page", page);
         return "/login";
     }
 
