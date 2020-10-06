@@ -43,13 +43,22 @@
             <th>Rating</th>
             <th>Price</th>
         </tr>
-        <tr th:each="object : ${objects}">
+        <tr th:each="object : ${page}">
             <td th:text="${object.getTreatmentName()}"></td>
             <td th:text="${object.getSpecialistName()}"></td>
             <td th:text="${object.getRate()}"></td>
             <td th:text="${object.getPrice()}"></td>
         </tr>
     </table>
+
+    <div class="w-50 text-center">
+        <span th:each="i: ${#numbers.sequence(0, page.getTotalPages() - 1)}">
+            <span th:if="${page.getNumber() == i}" class="selected">[[${i}+1]]</span>
+            <span th:unless="${page.getNumber() == i}">
+                <a th:href="@{/(page=${i},size=${page.getSize()})}">[[${i}+1]]</a>
+                </span>
+        </span>
+    </div>
     <h5>If you want to make an appointment, please login or register</h5>
 </div>
 </body>

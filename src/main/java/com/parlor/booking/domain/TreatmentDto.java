@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class MainPageDto {
+public class TreatmentDto {
     private String treatmentName;
     private BigDecimal price;
     private String specialistName;
