@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:with="lang=${#locale.language}" th:lang="${lang}">
+<link rel="stylesheet" href="webjars/datatables/1.10.12/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet" href="webjars/datetimepicker/2.4.7/jquery.datetimepicker.css">
+
 <head>
     <meta charset="UTF-8">
     <title>Specialist</title>
@@ -13,26 +16,31 @@
 <h1>Page for authorized Specialist</h1>
 <h2>Specialist cabinet</h2>
 <form action="/specialist" method="get">
-    Choose a date: <input type="date" name="${date}" />
-    <a href="/specialist"><span th:text="#{button.submit}"></span></a>
+    Enter a date (format yyyy-mm-dd):  <label class="control-label col-sm-2" for="startDate"></label>
+    <input class="form-control" id="startDate" type="datetime-local"
+           name="startDate"/>
+    <button type="submit"><span th:text="#{button.submit}"></span></button>
 </form>
-<form action="/specialist" method="get">
+<form action="/specialist" method="post">
     <div class="container">
 
         <table style="width:50%">
             <tr>
+                <th>Id</th>
                 <th>Time</th>
                 <th>Date</th>
                 <th>Service</th>
                 <th>isDone</th>
             </tr>
             <tr th:each="appointment : ${appointments}">
+                <td th:text="${appointment.getId()}"></td>
                 <td th:text="${appointment.getTimeslot()}"></td>
                 <td th:text="${appointment.getDate()}"></td>
                 <td th:text="${appointment.getTreatmentName()}"></td>
                 <td th:text="${appointment.getIsDone()}"></td>
                 <td>
-                    <a href="/specialist/done"><span th:text="Done"></span></a></td>
+                    <a th:href="@{/specialist(appointmentId=${appointment.getId()})}"><span th:text="Done"></span></a>
+                </td>
             </tr>
         </table>
     </div>
