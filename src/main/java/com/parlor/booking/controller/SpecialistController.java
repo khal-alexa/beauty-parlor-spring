@@ -9,11 +9,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @Log4j2
@@ -23,24 +24,25 @@ public class SpecialistController {
     private final AppointmentService appointmentService;
 
     @GetMapping()
-    public String specialistCabinet(Model model, Authentication authentication) {
-        Optional<Object> attribute = Optional.ofNullable(model.getAttribute("date"));
-        LocalDate date = LocalDate.now();
-        if (attribute.isPresent()) {
-            date = LocalDate.parse(attribute.toString());
+    public String specialistCabinet(@RequestParam(required = false) Long appointmentId,
+                                    @RequestParam(value = "startDate", required = false) String startDate,
+                                    Model model,
+                                    Authentication authentication) {
+        if (appointmentId != null) {
+            appointmentService.markAppointmentAsDone(appointmentId);
         }
-            UserDto user = (UserDto) authentication.getPrincipal();
+
+        LocalDate date = startDate == null ? LocalDate.now() : LocalDate.parse(startDate);
+        UserDto user = (UserDto) authentication.getPrincipal();
         List<AppointmentDto> appointments = appointmentService.findAllBySpecialistIdAndDate(user.getId(), date);
         model.addAttribute("appointments", appointments);
         return "specialist/cabinet";
     }
 
-    @GetMapping("/done")
-    public String changeAppointmentStatus(Model model) {
-        AppointmentDto appointmentDto = (AppointmentDto) model.getAttribute("appointment");
-        appointmentService.markAppointmentAsDone(appointmentDto.getId());
+    @PostMapping()
+    public String changeAppointmentStatus(@RequestParam Long appointmentId, Model model) {
+        appointmentService.markAppointmentAsDone(appointmentId);
         return "specialist/cabinet";
     }
-
 
 }
