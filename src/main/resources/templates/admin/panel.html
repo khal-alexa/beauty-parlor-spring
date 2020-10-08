@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:with="lang=${#locale.language}" th:lang="${lang}">
+<link rel="stylesheet" href="webjars/datatables/1.10.12/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet" href="webjars/datetimepicker/2.4.7/jquery.datetimepicker.css">
 <head>
     <meta charset="UTF-8">
     <title>Admin</title>
@@ -12,8 +14,10 @@
 <body>
 <h1>Admin panel</h1>
 <form action="/admin" method="get">
-    Choose a date: <input type="date" name="${date}" />
-    <a href="/admin"><span th:text="#{button.submit}"></span></a>
+    Enter a date (format yyyy-mm-dd): <label class="control-label col-sm-2" for="startDate"></label>
+    <input class="form-control" id="startDate" type="datetime-local"
+           name="startDate"/>
+    <button type="submit"><span th:text="#{button.submit}"></span></button>
 </form>
 <form action="/admin" method="get">
     <div class="container">
@@ -24,14 +28,22 @@
                 <th>Date</th>
                 <th>Service</th>
                 <th>isDone</th>
+                <th>isPaid</th>
+                <th>Edit</th>
+                <th>Delete</th>
+
             </tr>
             <tr th:each="appointment : ${appointments}">
                 <td th:text="${appointment.getTimeslot()}"></td>
                 <td th:text="${appointment.getDate()}"></td>
                 <td th:text="${appointment.getTreatmentName()}"></td>
                 <td th:text="${appointment.getIsDone()}"></td>
+                <td th:text="${appointment.getIsPaid()}"></td>
                 <td>
-                    <a href="/admin"><span th:text="Edit"></span></a>
+                    <a th:href="@{/admin/edit/{id}(id=${appointment.getId()})}"><span th:text="Edit"></span></a></td>
+                <td><a th:href="@{/admin/delete/{id}(id=${appointment.getId()})}"><span th:text="Delete"></span></a>
+                </td>
+
             </tr>
         </table>
     </div>

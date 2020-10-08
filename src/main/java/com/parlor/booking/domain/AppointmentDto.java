@@ -22,5 +22,6 @@ public class AppointmentDto {
         private String clientName;
         private Boolean available;
         private Boolean isDone;
+        private Boolean isPaid;
 
 }

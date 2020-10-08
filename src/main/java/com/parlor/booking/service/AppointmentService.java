@@ -14,4 +14,12 @@ public interface AppointmentService {
     List<AppointmentDto> findAllBySpecialistIdAndDate(Long id, LocalDate date);
 
     void markAppointmentAsDone(Long id);
+
+    AppointmentDto findById(Long appointmentId);
+
+    void deleteById(Long id);
+
+    void update(Long id, String time);
+
+    void markAppointmentAsPaid(Long id);
 }

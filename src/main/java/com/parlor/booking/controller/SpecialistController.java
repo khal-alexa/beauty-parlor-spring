@@ -40,7 +40,7 @@ public class SpecialistController {
     }
 
     @PostMapping()
-    public String changeAppointmentStatus(@RequestParam Long appointmentId, Model model) {
+    public String changeAppointmentStatus(@RequestParam Long appointmentId) {
         appointmentService.markAppointmentAsDone(appointmentId);
         return "specialist/cabinet";
     }
