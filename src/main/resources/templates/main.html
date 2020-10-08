@@ -2,16 +2,55 @@
 <html xmlns:th="http://www.thymeleaf.org" th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
     <meta charset="UTF-8">
-    <title>Client</title>
+    <title>Welcome</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
 </head>
-<body>
-<h1>Main page for non-logged user</h1>
+<body style="background-color: lavenderblush">
+<h1><p style="color: deepskyblue"><span th:text="#{welcome.message}"></span></p></h1>
+
+<a href="?lang=en" class="bp-icon bp-icon-next" th:data-info="#{lang.en}"><span><span
+        th:text="#{lang.en}"></span></span></a>
+<a href="?lang=ua" class="bp-icon bp-icon-drop" th:data-info="#{lang.ua}"><span><span
+        th:text="#{lang.ua}"></span></span></a>
 <form action="/login" method="get">
-    <a href="/login"><span th:text="#{button.login}"></span></a>
+        <input type="submit" th:value="#{button.login}"/>
+
 </form>
 <form action="/register" method="get">
-    <a href="/register"><span th:text="#{button.register}"></span></a>
+    <input type="submit" th:value="#{button.register}"/>
 </form>
+
 <h1>Table for Guest</h1>
+<div class="container">
+
+    <table style="width:50%">
+        <tr>
+            <th>Service</th>
+            <th>Specialist</th>
+            <th>Rating</th>
+            <th>Price</th>
+        </tr>
+        <tr th:each="object : ${page}">
+            <td th:text="${object.getTreatmentName()}"></td>
+            <td th:text="${object.getSpecialistName()}"></td>
+            <td th:text="${object.getRate()}"></td>
+            <td th:text="${object.getPrice()}"></td>
+        </tr>
+    </table>
+
+    <div class="w-50 text-center">
+        <span th:each="i: ${#numbers.sequence(0, page.getTotalPages() - 1)}">
+            <span th:if="${page.getNumber() == i}" class="selected">[[${i}+1]]</span>
+            <span th:unless="${page.getNumber() == i}">
+                <a th:href="@{/(page=${i},size=${page.getSize()})}">[[${i}+1]]</a>
+                </span>
+        </span>
+    </div>
+    <h5>If you want to make an appointment, please login or register</h5>
+</div>
 </body>
 </html>
