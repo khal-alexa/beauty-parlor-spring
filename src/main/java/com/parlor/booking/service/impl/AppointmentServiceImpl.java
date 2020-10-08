@@ -3,6 +3,7 @@ package com.parlor.booking.service.impl;
 import com.parlor.booking.domain.AppointmentDto;
 import com.parlor.booking.entity.Appointment;
 import com.parlor.booking.entity.Timeslot;
+import com.parlor.booking.mapper.AppointmentMapper;
 import com.parlor.booking.repository.AppointmentRepository;
 import com.parlor.booking.repository.TreatmentRepository;
 import com.parlor.booking.repository.TimeslotRepository;
@@ -29,6 +30,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final TimeslotRepository timeslotRepository;
     private final UserRepository userRepository;
     private final TreatmentRepository treatmentRepository;
+    private final AppointmentMapper appointmentMapper;
 
     @Override
     public Appointment saveNewAppointment(AppointmentDto appointmentDto) {
@@ -55,7 +57,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         int index = 0;
         for (Timeslot timeslot : timeslots) {
             if (index < appointments.size() && timeslot.getId().equals(appointments.get(index).getTimeslotId())) {
-                dtos.add(mapAppointmentIntoAppointmentDto(appointments.get(index)));
+                dtos.add(appointmentMapper.mapAppointmentIntoAppointmentDto(appointments.get(index)));
                 index++;
             } else {
                 AppointmentDto dto = AppointmentDto.builder()
@@ -73,7 +75,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     public List<AppointmentDto> findAllBySpecialistIdAndDate(Long id, LocalDate date) {
         return appointmentRepository.findAllByDate(date).stream()
                 .filter(appointment -> appointment.getSpecialistId().equals(id))
-                .map(this::mapAppointmentIntoAppointmentDto)
+                .map(appointmentMapper::mapAppointmentIntoAppointmentDto)
                 .collect(Collectors.toList());
     }
 
@@ -81,26 +83,33 @@ public class AppointmentServiceImpl implements AppointmentService {
     public void markAppointmentAsDone(Long id) {
         Optional<Appointment> appointment = appointmentRepository.findById(id);
         appointment.orElseThrow(EntityNotFoundException::new).setDone(true);
-        appointmentRepository.save(appointment.get());
+        appointmentRepository.save(appointment.orElseThrow(EntityNotFoundException::new));
     }
 
-    private AppointmentDto mapAppointmentIntoAppointmentDto(Appointment appointment) {
-        return AppointmentDto.builder()
-                .id(appointment.getId())
-                .date(appointment.getDate())
-                .timeslot(timeslotRepository.findById(appointment.getTimeslotId()).
-                        orElseThrow(EntityNotFoundException::new).
-                        getStartTime().toString())
-                .treatmentName(treatmentRepository.findById(appointment.getTreatmentId())
-                        .orElseThrow(EntityNotFoundException::new)
-                        .getName())
-                .specialistId(appointment.getSpecialistId())
-                .specialistName(userRepository.findById(appointment.getSpecialistId())
-                        .orElseThrow(EntityNotFoundException::new)
-                        .getUsername())
-                .isDone(appointment.isDone())
-                .available(false)
-                .build();
+    @Override
+    public AppointmentDto findById(Long appointmentId) {
+        return appointmentMapper.
+                mapAppointmentIntoAppointmentDto(appointmentRepository.findById(appointmentId)
+                        .orElseThrow(EntityNotFoundException::new));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        appointmentRepository.deleteById(id);
+    }
+
+    @Override
+    public void update(Long id, String time) {
+        Appointment appointment = appointmentRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        appointment.setTimeslotId(timeslotRepository.findByStartTime(LocalTime.parse(time)).getId());
+        appointmentRepository.save(appointment);
+    }
+
+    @Override
+    public void markAppointmentAsPaid(Long id) {
+        Optional<Appointment> appointment = appointmentRepository.findById(id);
+        appointment.orElseThrow(EntityNotFoundException::new).setPaid(true);
+        appointmentRepository.save(appointment.orElseThrow(EntityNotFoundException::new));
     }
 
 }
