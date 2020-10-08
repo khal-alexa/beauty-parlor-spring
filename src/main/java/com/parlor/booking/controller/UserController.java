@@ -36,7 +36,7 @@ public class UserController {
         }
         Page<TreatmentDto> page = mainPageService.getAllMainPageObjects(pageable);
         model.addAttribute("page", page);
-        return "/login";
+        return "/main";
     }
 
     @GetMapping("/login")
