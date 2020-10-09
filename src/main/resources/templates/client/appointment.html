@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:with="lang=${#locale.language}" th:lang="${lang}">
+<link rel="stylesheet" href="webjars/datatables/1.10.12/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet" href="webjars/datetimepicker/2.4.7/jquery.datetimepicker.css">
+<head>
+    <meta charset="UTF-8">
+    <title>Client</title>
+</head>
+<body>
+<h1>Appointment form</h1>
+<form th:action="@{/client/appointment/(time = ${time}, date=${date}, treatmentName=${treatmentName})}" method="post">
+    <div class="container">
+        <label ><b>Timeslot</b></label>
+        <span th:text="${time}" th:name="timeslot"></span>
+        <br>
+
+        <label ><b>Date </b></label>
+        <span th:type="datetime-local" th:text="${date}" th:name="date"></span>
+        <br>
+
+        <label ><b>Treatment</b></label>
+        <span th:text="${treatmentName}" th:name="treatmentName"></span>
+        <br>
+
+        <label><b>Specialist name</b></label>
+        <select th:name="specialistName" id="specialistName">
+            <option th:each="specialist : ${specialists}" th:value="${specialist.getUsername()}"
+                    th:text="${specialist.getUsername()}">
+            </option>
+        </select>
+
+        <button type="submit">Add appointment</button>
+    </div>
+
+</form>
+</body>
+</html>

@@ -12,11 +12,12 @@
 </head>
 <body>
 <h1><p> Booking</p></h1>
-<form action="/client/booking" method='POST'>
+<form action="/client/booking/{treatmentName}" method='POST'>
     Choose a date: <input type="date" name="date" />
     <a href="/client/booking"><span th:text="#{button.submit}"></span></a>
 </form>
-<form action="/client/appointments" method="post">
+
+<form th:action="@{/client/appointment/{time}}" method="post">
     <div class="container">
 
         <table style="width:50%">
@@ -26,6 +27,7 @@
                 <th>Service</th>
                 <th>Specialist</th>
                 <th>Available</th>
+                <th></th>
             </tr>
             <tr th:each="appointment : ${appointments}">
                 <td th:text="${appointment.getTimeslot()}"></td>
@@ -33,7 +35,9 @@
                 <td th:text="${appointment.getTreatmentName()}"></td>
                 <td th:text="${appointment.getSpecialistName()}"></td>
                 <td th:text="${appointment.getAvailable()}"></td>
-
+                <td><span th:if="${appointment.getAvailable() == true}"></span>
+                    <span th:unless="${appointment.getAvailable() == false}">
+                    <a th:href="@{/client/appointment/(time=${appointment.getTimeslot()}, date=${appointment.getDate()}, trName=${treatmentName})}"><span th:text="Book"></span></a></span></td></td>
             </tr>
         </table>
     </div>

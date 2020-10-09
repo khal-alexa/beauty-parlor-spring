@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Log4j2
@@ -28,7 +29,7 @@ public class AdminController {
     public String adminPage(@RequestParam(value = "startDate", required = false) String startDate,
                             Model model) {
         LocalDate date = parseDate(startDate);
-        List<AppointmentDto> appointments = appointmentService.findAllByDateWithTimeslots(date);
+        List<AppointmentDto> appointments = appointmentService.findAllByDateWithTimeslots(date, Optional.empty());
         model.addAttribute("appointments", appointments);
         return ADMIN_MAIN_PAGE;
     }

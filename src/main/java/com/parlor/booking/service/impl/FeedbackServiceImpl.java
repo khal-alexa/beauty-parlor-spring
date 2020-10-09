@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Log4j2
@@ -31,6 +32,7 @@ public class FeedbackServiceImpl implements FeedbackService {
                 .clientId(feedbackDto.getClientId())
                 .specialistId(specialist.get().getId())
                 .text(feedbackDto.getText())
+                .createdOn(LocalDateTime.now())
                 .build());
     }
 
