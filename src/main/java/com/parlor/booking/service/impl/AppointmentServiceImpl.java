@@ -3,6 +3,7 @@ package com.parlor.booking.service.impl;
 import com.parlor.booking.domain.AppointmentDto;
 import com.parlor.booking.entity.Appointment;
 import com.parlor.booking.entity.Timeslot;
+import com.parlor.booking.entity.Treatment;
 import com.parlor.booking.mapper.AppointmentMapper;
 import com.parlor.booking.repository.AppointmentRepository;
 import com.parlor.booking.repository.TreatmentRepository;
@@ -46,10 +47,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<AppointmentDto> findAllByDateWithTimeslots(LocalDate date) {
-        List<Appointment> appointments = appointmentRepository.findAllByDate(date).stream()
-                .sorted(Comparator.comparing(Appointment::getDate).thenComparing(Appointment::getTimeslotId))
-                .collect(Collectors.toList());
+    public List<AppointmentDto> findAllByDateWithTimeslots(LocalDate date, Optional<Long> treatmentId) {
+        List<Appointment> appointments = findAllSorted(date, treatmentId);
 
         List<Timeslot> timeslots = timeslotRepository.findAll();
 
@@ -110,6 +109,24 @@ public class AppointmentServiceImpl implements AppointmentService {
         Optional<Appointment> appointment = appointmentRepository.findById(id);
         appointment.orElseThrow(EntityNotFoundException::new).setPaid(true);
         appointmentRepository.save(appointment.orElseThrow(EntityNotFoundException::new));
+    }
+
+    @Override
+    public List<AppointmentDto> findAllByDateAndTreatmentName(LocalDate date, String treatmentName) {
+        Treatment treatment = treatmentRepository.findByName(treatmentName).orElseThrow(EntityNotFoundException::new);
+        return findAllByDateWithTimeslots(date, Optional.of(treatment.getId()));
+    }
+
+    private List<Appointment> findAllSorted(LocalDate date, Optional<Long> treatmentId) {
+        List<Appointment> appointments;
+        if(!treatmentId.isPresent()) {
+            appointments = appointmentRepository.findAllByDate(date);
+        } else {
+            appointments = appointmentRepository.findAllByDateAndTreatmentId(date, treatmentId.get());
+        }
+        return appointments.stream()
+                .sorted(Comparator.comparing(Appointment::getDate).thenComparing(Appointment::getTimeslotId))
+                .collect(Collectors.toList());
     }
 
 }
