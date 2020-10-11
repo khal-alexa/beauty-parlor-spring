@@ -6,15 +6,15 @@ import com.parlor.booking.entity.Timeslot;
 import com.parlor.booking.entity.Treatment;
 import com.parlor.booking.mapper.AppointmentMapper;
 import com.parlor.booking.repository.AppointmentRepository;
-import com.parlor.booking.repository.TreatmentRepository;
 import com.parlor.booking.repository.TimeslotRepository;
-import com.parlor.booking.repository.UserRepository;
+import com.parlor.booking.repository.TreatmentRepository;
 import com.parlor.booking.service.AppointmentService;
+import com.parlor.booking.service.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -29,23 +29,15 @@ import java.util.stream.Collectors;
 public class AppointmentServiceImpl implements AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final TimeslotRepository timeslotRepository;
-    private final UserRepository userRepository;
     private final TreatmentRepository treatmentRepository;
     private final AppointmentMapper appointmentMapper;
 
     @Override
     public Appointment saveNewAppointment(AppointmentDto appointmentDto) {
-        return appointmentRepository.save(Appointment.builder()
-                .date(appointmentDto.getDate())
-                .timeslotId(timeslotRepository.findByStartTime(LocalTime.parse(appointmentDto.getTimeslot())).getId())
-                .specialistId(userRepository.findByUsername(appointmentDto.getSpecialistName()).orElseThrow(EntityNotFoundException::new).getId())
-                .treatmentId(treatmentRepository.findByName(appointmentDto.getTreatmentName()).orElseThrow(EntityNotFoundException::new).getId())
-                .clientId(appointmentDto.getClientId())
-                .isDone(false)
-                .isPaid(false)
-                .build());
+        return appointmentRepository.save(appointmentMapper.mapDtoIntoAppointment(appointmentDto));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<AppointmentDto> findAllByDateWithTimeslots(LocalDate date, Optional<Long> treatmentId) {
         List<Appointment> appointments = findAllSorted(date, treatmentId);
@@ -70,6 +62,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         return dtos;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<AppointmentDto> findAllBySpecialistIdAndDate(Long id, LocalDate date) {
         return appointmentRepository.findAllByDate(date).stream()
@@ -97,6 +90,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.deleteById(id);
     }
 
+    @Transactional
     @Override
     public void update(Long id, String time) {
         Appointment appointment = appointmentRepository.findById(id).orElseThrow(EntityNotFoundException::new);
@@ -111,6 +105,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepository.save(appointment.orElseThrow(EntityNotFoundException::new));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<AppointmentDto> findAllByDateAndTreatmentName(LocalDate date, String treatmentName) {
         Treatment treatment = treatmentRepository.findByName(treatmentName).orElseThrow(EntityNotFoundException::new);

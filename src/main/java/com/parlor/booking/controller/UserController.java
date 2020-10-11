@@ -26,13 +26,14 @@ import java.util.Optional;
 public class UserController {
     private final UserService userService;
     private final MainPageService mainPageService;
+    private static final String REDIRECT_TO_HOME_PAGE = "redirect:/";
 
     @GetMapping("/")
     public String indexPage(@PageableDefault(size = 5) Pageable pageable, Model model, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             UserDto user = (UserDto) authentication.getPrincipal();
             String path = user.getAuthorities().get(0).toString().toLowerCase();
-            return "redirect:/" + path;
+            return REDIRECT_TO_HOME_PAGE + path;
         }
         Page<TreatmentDto> page = mainPageService.getAllMainPageObjects(pageable);
         model.addAttribute("page", page);
@@ -42,7 +43,7 @@ public class UserController {
     @GetMapping("/login")
     public String loginPage(Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
-            return "redirect:/";
+            return REDIRECT_TO_HOME_PAGE;
         }
         return "login";
     }
@@ -51,21 +52,24 @@ public class UserController {
     public String postRegisterPage(@Valid UserDto userDto, BindingResult bindingResult) {
         Optional<User> user = userService.findByEmail(userDto.getEmail());
         if (user.isPresent()) {
+            log.info("Not unique email provided");
             bindingResult
                     .rejectValue("email", "error.user",
                             "There is already a user registered with the email provided");
         }
         String password = userDto.getPassword();
         if (password != null && !password.equals(userDto.getConfirmedPassword())) {
+            String message = "Repeated password doesn't match";
+            log.info(message);
             bindingResult
                     .rejectValue("password", "error.user",
-                            "Repeated password doesn't match");
+                            message);
         }
         if (bindingResult.hasErrors()) {
             return "register";
         }
         userService.addNewUser(userDto);
-        return "redirect:/";
+        return REDIRECT_TO_HOME_PAGE;
     }
 
     @GetMapping("/register")

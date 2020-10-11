@@ -12,7 +12,10 @@ import com.parlor.booking.service.FeedbackService;
 import com.parlor.booking.service.TimeslotService;
 import com.parlor.booking.service.TreatmentService;
 import com.parlor.booking.service.UserService;
+import com.parlor.booking.service.exceptions.EntityNotFoundException;
+import com.parlor.booking.service.exceptions.EntityNotSavedException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,13 +26,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Log4j2
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/client")
@@ -72,7 +75,9 @@ public class ClientController {
         feedbackDto.setClientId(user.getId());
         Feedback feedback = feedbackService.saveFeedback(feedbackDto);
         if (feedback == null || feedback.getId() == null) {
-            throw new IllegalStateException("Feedback was not saved");
+            String message = "Feedback was not saved";
+            log.warn(message);
+            throw new EntityNotSavedException(message);
         }
         return "redirect:/client/thanks";
     }
@@ -134,7 +139,9 @@ public class ClientController {
                 .clientId(user.getId())
                 .build());
         if (newAppointment.getId() == null) {
-            throw new IllegalStateException("Appointment was not saved");
+            String message = "Appointment was not saved";
+            log.warn(message);
+            throw new EntityNotSavedException(message);
         }
         return "redirect:/client";
     }

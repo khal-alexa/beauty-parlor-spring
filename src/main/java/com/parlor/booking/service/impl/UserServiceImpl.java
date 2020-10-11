@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> userFromDB = userRepository.findByUsername(username);
         if (!userFromDB.isPresent()) {
             String errorMessage = "User with name:" + username + " was not found!";
-            log.error(errorMessage);
+            log.warn(errorMessage);
             throw new EntityNotFoundException(errorMessage);
         }
         return new UserDto(userFromDB.get());
