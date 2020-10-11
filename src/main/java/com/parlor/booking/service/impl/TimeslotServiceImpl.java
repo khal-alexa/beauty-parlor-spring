@@ -5,11 +5,11 @@ import com.parlor.booking.entity.Timeslot;
 import com.parlor.booking.repository.TimeslotRepository;
 import com.parlor.booking.repository.TreatmentRepository;
 import com.parlor.booking.service.TimeslotService;
+import com.parlor.booking.service.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;

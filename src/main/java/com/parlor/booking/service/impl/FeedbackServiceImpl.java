@@ -25,7 +25,9 @@ public class FeedbackServiceImpl implements FeedbackService {
     public Feedback saveFeedback(FeedbackDto feedbackDto) {
         Optional<User> specialist = userRepository.findByUsername(feedbackDto.getSpecialistName());
         if (!specialist.isPresent()) {
-            throw new EntityNotFoundException("Specialist wih name " + feedbackDto.getSpecialistName() + " was not found");
+            String message = String.format("Specialist wih name %s was not found", feedbackDto.getSpecialistName());
+            log.warn(message);
+            throw new EntityNotFoundException(message);
         }
         return feedbackRepository.save(Feedback.builder()
                 .rate(feedbackDto.getRate())
