@@ -5,8 +5,8 @@
     <title>Client</title>
 </head>
 <body>
-<h1>Page for authorized Client</h1>
-<h2>You could choose a treatment to make appointment:</span></h2>
+<h1><span th:text="#{message.client}"></span></h1>
+<h2><span th:text="#{message.client.appointment}"></span></h2>
 <br>
 <form action="/client/booking/manicure" method="get">
     <a th:href="@{/client/booking/{treatmentName}(treatmentName=manicure)}"><span th:text="#{button.manicure}"></span></a>
@@ -17,7 +17,7 @@
 <form action="/client/booking/massage" method="get">
     <a th:href="@{/client/booking/{treatmentName}(treatmentName=massage)}"><span th:text="#{button.massage}"></span></a>
 </form>
-<h2>Or you can leave a feedback:</span></h2>
+<h2><span th:text="#{message.client.feedback}"></span></h2>
 <form action="/client/feedback" method="post">
     <a href="/client/feedback"><span th:text="#{button.feedback}"></span></a>
 </form>

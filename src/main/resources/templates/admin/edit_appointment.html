@@ -12,9 +12,9 @@
     </style>
 </head>
 <body>
-<h1>Edit appointment page</h1>
+<h1><span th:text="#{appointment.form}"></span></h1>
 <form th:action="@{/admin/saved/{id}(id=${appointment.getId()})}" method="get">
-    Enter new time (format hh:mm):  <label class="control-label col-sm-2" for="newTime"></label>
+    <span th:text="#{time.format}"></span><label class="control-label col-sm-2" for="newTime"></label>
     <input class="form-control" id="newTime" type="text"
            name="newTime"/>
     <button type="submit"><span th:text="#{button.submit}"></span></button>
@@ -24,14 +24,14 @@
 
         <table style="width:50%">
             <tr>
-                <th>Id</th>
-                <th>Time</th>
-                <th>Date</th>
-                <th>Treatment</th>
-                <th>Specialist</th>
-                <th>Client</th>
-                <th>isDone</th>
-                <th>idPaid</th>
+                <th><span th:text="#{table.column.id}"></span></th>
+                <th><span th:text="#{table.column.time}"></span></th>
+                <th><span th:text="#{table.column.date}"></span></th>
+                <th><span th:text="#{table.column.treatment}"></span></th>
+                <th><span th:text="#{table.column.specialist}"></span></th>
+                <th><span th:text="#{table.column.client}"></span></th>
+                <th><span th:text="#{table.column.done}"></span></th>
+                <th><span th:text="#{table.column.paid}"></span></th>
             </tr>
             <tr>
                 <td th:text="${appointment.getId()}" th:field="*{id}" id="id"></td>

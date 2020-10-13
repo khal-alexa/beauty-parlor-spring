@@ -12,9 +12,9 @@
     </style>
 </head>
 <body>
-<h1>Admin panel</h1>
+<h1><span th:text="#{admin.panel}"></span></h1>
 <form action="/admin" method="get">
-    Enter a date (format yyyy-mm-dd): <label class="control-label col-sm-2" for="startDate"></label>
+    <span th:text="#{date.format}"></span><label class="control-label col-sm-2" for="startDate"></label>
     <input class="form-control" id="startDate" type="datetime-local"
            name="startDate"/>
     <button type="submit"><span th:text="#{button.submit}"></span></button>
@@ -24,13 +24,13 @@
 
         <table style="width:50%">
             <tr>
-                <th>Time</th>
-                <th>Date</th>
-                <th>Treatment</th>
-                <th>isDone</th>
-                <th>isPaid</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th><span th:text="#{table.column.time}"></span></th>
+                <th><span th:text="#{table.column.date}"></span></th>
+                <th><span th:text="#{table.column.treatment}"></span></th>
+                <th><span th:text="#{table.column.done}"></span></th>
+                <th><span th:text="#{table.column.paid}"></span></th>
+                <th><span th:text="#{button.edit}"></span></th>
+                <th><span th:text="#{button.delete}"></span></th>
 
             </tr>
             <tr th:each="appointment : ${appointments}">
@@ -40,8 +40,8 @@
                 <td th:text="${appointment.getIsDone()}"></td>
                 <td th:text="${appointment.getIsPaid()}"></td>
                 <td>
-                    <a th:href="@{/admin/edit/{id}(id=${appointment.getId()})}"><span th:text="Edit"></span></a></td>
-                <td><a th:href="@{/admin/delete/{id}(id=${appointment.getId()})}"><span th:text="Delete"></span></a>
+                    <a th:href="@{/admin/edit/{id}(id=${appointment.getId()})}"><span th:text="#{button.edit}"></span></a></td>
+                <td><a th:href="@{/admin/delete/{id}(id=${appointment.getId()})}"><span th:text="#{button.delete}"></span></a>
                 </td>
 
             </tr>

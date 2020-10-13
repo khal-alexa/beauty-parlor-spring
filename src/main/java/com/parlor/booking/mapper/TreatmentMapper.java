@@ -2,7 +2,6 @@ package com.parlor.booking.mapper;
 
 import com.parlor.booking.domain.TreatmentDto;
 import com.parlor.booking.entity.Treatment;
-import com.parlor.booking.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -7,29 +7,29 @@
     <title>Client</title>
 </head>
 <body>
-<h1>Appointment form</h1>
+<h1><span th:text="#{message.appointment}"></span></h1>
 <form th:action="@{/client/appointment/(time = ${time}, date=${date}, treatmentName=${treatmentName})}" method="post">
     <div class="container">
-        <label ><b>Timeslot</b></label>
+        <label ><b><span th:text="#{message.timeslot}"></span></b></label>
         <span th:text="${time}" th:name="timeslot"></span>
         <br>
 
-        <label ><b>Date </b></label>
+        <label ><b><span th:text="#{table.column.date}"></span> </b></label>
         <span th:type="datetime-local" th:text="${date}" th:name="date"></span>
         <br>
 
-        <label ><b>Treatment</b></label>
+        <label ><b><span th:text="#{table.column.treatment}"></span></b></label>
         <span th:text="${treatmentName}" th:name="treatmentName"></span>
         <br>
 
-        <label><b>Specialist name</b></label>
+        <label><b><span th:text="#{feedback.specialist.name}"></span></b></label>
         <select th:name="specialistName" id="specialistName">
             <option th:each="specialist : ${specialists}" th:value="${specialist.getUsername()}"
                     th:text="${specialist.getUsername()}">
             </option>
         </select>
 
-        <button type="submit">Add appointment</button>
+        <button type="submit"><span th:text="#{button.appointment}"></span></button>
     </div>
 
 </form>
