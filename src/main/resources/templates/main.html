@@ -24,15 +24,15 @@
     <input type="submit" th:value="#{button.register}"/>
 </form>
 
-<h1>Table for Guest</h1>
+<h1><span th:text="#{message.guest}"></span></h1>
 <div class="container">
 
     <table style="width:50%">
         <tr>
-            <th>Treatment</th>
-            <th>Specialist</th>
-            <th>Rating</th>
-            <th>Price</th>
+            <th><span th:text="#{table.column.treatment}"></span></th>
+            <th><span th:text="#{table.column.specialist}"></span></th>
+            <th><span th:text="#{table.column.rating}"></span></th>
+            <th><span th:text="#{table.column.price}"></span></th>
         </tr>
         <tr th:each="object : ${page}">
             <td th:text="${object.getTreatmentName()}"></td>
@@ -50,7 +50,7 @@
                 </span>
         </span>
     </div>
-    <h5>If you want to make an appointment, please login or register</h5>
+    <h5><span th:text="#{guest.message}"></span></h5>
 </div>
 </body>
 </html>

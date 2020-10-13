@@ -9,14 +9,14 @@
 <h1><p><span th:text="#{feedback.message}"></span></p></h1>
 <form method="POST" action='/client/feedback'>
     <div class="container">
-        <label><b>Specialist name</b></label>
+        <label><b><span th:text="#{feedback.specialist.name}"></span></b></label>
         <select name="specialistName" id="specialistName">
             <option th:each="specialist : ${specialists}" th:value="${specialist.getUsername()}"
                     th:text="${specialist.getUsername()}">
             </option>
         </select>
         <br>
-        <label><b>Rate </b></label>
+        <label><b><span th:text="#{feedback.rate}"></span> </b></label>
         <select name="rate" id="rate">
             <option value="1">1</option>
             <option value="2">2</option>
@@ -25,11 +25,11 @@
             <option value="5" selected>5</option>
         </select>
         <br>
-        <label><b>Feedback:</b></label>
+        <label><b><span th:text="#{feedback.form}"></span></b></label>
         <br>
         <textarea rows="5" cols="60" maxlength="2000" name="text">
          </textarea><br>
-        <button type="submit">Send</button>
+        <button type="submit"><span th:text="#{button.send}"></span></button>
     </div>
 </form>
 </body>

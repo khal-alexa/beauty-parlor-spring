@@ -13,10 +13,10 @@
     </style>
 </head>
 <body>
-<h1>Page for authorized Specialist</h1>
-<h2>Specialist cabinet</h2>
+<h1><span th:text="#{message.specialist}"></span></h1>
+<h2><span th:text="#{specialist.cabinet}"></span></h2>
 <form action="/specialist" method="get">
-    Enter a date (format yyyy-mm-dd):  <label class="control-label col-sm-2" for="startDate"></label>
+    <span th:text="#{date.format}"></span><label class="control-label col-sm-2" for="startDate"></label>
     <input class="form-control" id="startDate" type="datetime-local"
            name="startDate"/>
     <button type="submit"><span th:text="#{button.submit}"></span></button>
@@ -26,11 +26,11 @@
 
         <table style="width:50%">
             <tr>
-                <th>Id</th>
-                <th>Time</th>
-                <th>Date</th>
-                <th>Treatment</th>
-                <th>isDone</th>
+                <th><span th:text="#{table.column.id}"></span></th>
+                <th><span th:text="#{table.column.time}"></span></th>
+                <th><span th:text="#{table.column.date}"></span></th>
+                <th><span th:text="#{table.column.treatment}"></span></th>
+                <th><span th:text="#{table.column.done}"></span></th>
             </tr>
             <tr th:each="appointment : ${appointments}">
                 <td th:text="${appointment.getId()}"></td>

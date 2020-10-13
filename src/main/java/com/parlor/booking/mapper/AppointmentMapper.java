@@ -5,10 +5,10 @@ import com.parlor.booking.entity.Appointment;
 import com.parlor.booking.repository.TimeslotRepository;
 import com.parlor.booking.repository.TreatmentRepository;
 import com.parlor.booking.repository.UserRepository;
+import com.parlor.booking.service.exceptions.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.LocalTime;
 
 @Component
