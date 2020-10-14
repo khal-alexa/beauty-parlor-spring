@@ -5,6 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface MainPageService {
-    Page<TreatmentDto> getAllMainPageObjects(Pageable pageable);
+    Page<TreatmentDto> getAllMainPageObjects(Pageable pageable, String sortField, String sortDirection);
 
 }
