@@ -30,8 +30,14 @@
     <table style="width:50%">
         <tr>
             <th><span th:text="#{table.column.treatment}"></span></th>
-            <th><span th:text="#{table.column.specialist}"></span></th>
-            <th><span th:text="#{table.column.rating}"></span></th>
+            <th><span th:text="#{table.column.specialist}"></span>
+                <a th:href="@{/(page=${currentPage},sortField=specialistName,sortDir=ASC)}">&uarr;</a>
+                <a th:href="@{/(page=${currentPage},sortField=specialistName,sortDir=DESC)}">&darr;</a>
+            </th>
+            <th><span th:text="#{table.column.rating}"></span>
+                <a th:href="@{/(page=${currentPage},sortField=rate,sortDir=ASC)}">&uarr;</a>
+                <a th:href="@{/(page=${currentPage},sortField=rate,sortDir=DESC)}">&darr;</a>
+            </th>
             <th><span th:text="#{table.column.price}"></span></th>
         </tr>
         <tr th:each="object : ${page}">
@@ -46,7 +52,7 @@
         <span th:each="i: ${#numbers.sequence(0, page.getTotalPages() - 1)}">
             <span th:if="${page.getNumber() == i}" class="selected">[[${i}+1]]</span>
             <span th:unless="${page.getNumber() == i}">
-                <a th:href="@{/(page=${i},size=${page.getSize()})}">[[${i}+1]]</a>
+                <a th:href="@{/(page=${i},sortField=${sortField},sortDir=${sortDir})}">[[${i}+1]]</a>
                 </span>
         </span>
     </div>

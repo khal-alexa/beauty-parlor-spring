@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -29,14 +30,22 @@ public class UserController {
     private static final String REDIRECT_TO_HOME_PAGE = "redirect:/";
 
     @GetMapping("/")
-    public String indexPage(@PageableDefault(size = 5) Pageable pageable, Model model, Authentication authentication) {
+    public String indexPage(@PageableDefault(size = 5) Pageable pageable,
+                            @RequestParam(value = "sortField", required = false) String sortField,
+                            @RequestParam(value = "sortDir", required = false) String sortDir,
+                            Model model,
+                            Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             UserDto user = (UserDto) authentication.getPrincipal();
             String path = user.getAuthorities().get(0).toString().toLowerCase();
             return REDIRECT_TO_HOME_PAGE + path;
         }
-        Page<TreatmentDto> page = mainPageService.getAllMainPageObjects(pageable);
+        Page<TreatmentDto> page = mainPageService.getAllMainPageObjects(pageable, sortField, sortDir);
+
         model.addAttribute("page", page);
+        model.addAttribute("currentPage", pageable.getPageNumber());
+        model.addAttribute("sortField", sortField == null ? "specialistName" : sortField);
+        model.addAttribute("sortDir", sortDir == null ? "ASC" : sortDir);
         return "/main";
     }
 

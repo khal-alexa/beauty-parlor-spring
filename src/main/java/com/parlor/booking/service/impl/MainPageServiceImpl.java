@@ -16,9 +16,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -29,12 +32,18 @@ public class MainPageServiceImpl implements MainPageService {
     private final UserRepository userRepository;
 
     @Override
-    public Page<TreatmentDto> getAllMainPageObjects(Pageable pageable) {
+    public Page<TreatmentDto> getAllMainPageObjects(Pageable pageable, String sortField, String sortDirection) {
+        if (sortField == null) {
+            sortField = "specialistName";
+            sortDirection = "ASC";
+        }
         List<Treatment> treatments = treatmentRepository.findAll();
         List<TreatmentDto> dtos = new TreatmentMapper(getAllRates(getAllSpecialists())).mapEntitiesIntoDtos(treatments);
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), dtos.size());
-        return new PageImpl<>(dtos.subList(start, end), pageable, dtos.size());
+        List<TreatmentDto> sortedList = "Rate".equalsIgnoreCase(sortField) ?
+                sortByRate(dtos, sortDirection) : sortBySpecialistName(dtos, sortDirection);
+        return new PageImpl<>(sortedList.subList(start, end), pageable, dtos.size());
     }
 
     private Map<Long, Double> getAllRates(List<User> specialists) {
@@ -46,7 +55,31 @@ public class MainPageServiceImpl implements MainPageService {
     }
 
     private List<User> getAllSpecialists() {
-       return userRepository.findAllByRole(Role.SPECIALIST);
+        return userRepository.findAllByRole(Role.SPECIALIST);
+    }
+
+    private List<TreatmentDto> sortBySpecialistName(List<TreatmentDto> treatments, String sortDirection) {
+        if ("DESC".equalsIgnoreCase(sortDirection)) {
+            return treatments.stream()
+                    .sorted(Collections.reverseOrder(Comparator.comparing(TreatmentDto::getSpecialistName)))
+                    .collect(Collectors.toList());
+        } else {
+            return treatments.stream()
+                    .sorted(Comparator.comparing(TreatmentDto::getSpecialistName))
+                    .collect(Collectors.toList());
+        }
+    }
+
+    private List<TreatmentDto> sortByRate(List<TreatmentDto> treatments, String sortDirection) {
+        if ("DESC".equalsIgnoreCase(sortDirection)) {
+            return treatments.stream()
+                    .sorted(Collections.reverseOrder(Comparator.comparing(TreatmentDto::getRate)))
+                    .collect(Collectors.toList());
+        } else {
+            return treatments.stream()
+                    .sorted(Comparator.comparing(TreatmentDto::getRate))
+                    .collect(Collectors.toList());
+        }
     }
 
 }
